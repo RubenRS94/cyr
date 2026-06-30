@@ -385,35 +385,91 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
 
 .services-grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:var(--space-md) var(--space-sm);
+  grid-template-columns:1fr;
+  gap:var(--space-md);
 }
-@media(min-width:700px){.services-grid{grid-template-columns:repeat(3,1fr);}}
-@media(min-width:1024px){.services-grid{grid-template-columns:repeat(6,1fr);}}
+@media(min-width:700px){.services-grid{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:1100px){.services-grid{grid-template-columns:repeat(3,1fr);}}
 
 .service-card{
-  background:var(--color-white);
-  border-radius:var(--radius-md);
-  padding:var(--space-md) var(--space-sm);
-  text-align:center;
-  border:1px solid var(--color-line);
-  transition:transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+  position:relative;
+  isolation:isolate;
+  min-height:270px;
+  background:linear-gradient(145deg,var(--color-white) 0%,var(--color-cream-soft) 100%);
+  border-radius:calc(var(--radius-md) + 6px);
+  padding:var(--space-md);
+  text-align:left;
+  border:1px solid rgba(90,32,48,.12);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+}
+.service-card::before{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  right:-58px;
+  top:-58px;
+  border-radius:50%;
+  background:rgba(90,32,48,.08);
+  z-index:-1;
+  transition:transform var(--t-fast), background var(--t-fast);
+}
+.service-card::after{
+  content:"";
+  position:absolute;
+  inset:auto var(--space-md) 0 var(--space-md);
+  height:3px;
+  background:var(--color-burgundy);
+  transform:scaleX(.18);
+  transform-origin:left;
+  transition:transform var(--t-fast);
 }
 .service-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 18px 34px rgba(64,22,34,.1);
-  border-color:transparent;
+  transform:translateY(-8px);
+  box-shadow:0 22px 42px rgba(64,22,34,.13);
+  border-color:rgba(90,32,48,.22);
+  background:var(--color-white);
 }
+.service-card:hover::before{transform:scale(1.18);background:rgba(90,32,48,.12);}
+.service-card:hover::after{transform:scaleX(1);}
 .service-icon{
-  width:54px;height:54px;margin:0 auto var(--space-sm);
+  width:62px;height:62px;margin:0 0 var(--space-md);
   display:flex;align-items:center;justify-content:center;
   border-radius:50%;
-  border:1px solid var(--color-burgundy);
+  background:var(--color-blush);
+  border:1px solid rgba(90,32,48,.2);
   color:var(--color-burgundy);
+  transition:background var(--t-fast), color var(--t-fast), transform var(--t-fast);
 }
-.service-icon svg{width:26px;height:26px;}
-.service-card h3{font-size:1.15rem;margin-bottom:.5rem;}
-.service-card p{font-size:.88rem;color:var(--color-ink-soft);}
+.service-card:hover .service-icon{
+  background:var(--color-burgundy);
+  color:var(--color-white);
+  transform:scale(1.04);
+}
+.service-icon svg{width:28px;height:28px;}
+.service-card h3{font-size:1.38rem;margin-bottom:.65rem;padding-right:1rem;}
+.service-card p{font-size:.95rem;color:var(--color-ink-soft);max-width:30ch;}
+.service-card-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  width:max-content;
+  margin-top:var(--space-md);
+  font-size:.78rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--color-burgundy);
+  font-weight:500;
+}
+.service-card-cta::after{
+  content:"→";
+  transition:transform var(--t-fast);
+}
+.service-card:hover .service-card-cta::after{transform:translateX(4px);}
 
 /* ============================================================
    6. SOBRE LA CLÍNICA
@@ -568,7 +624,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
 }
 .testi-arrow:hover{background:var(--color-burgundy);color:var(--color-white);}
 .testi-arrow svg{width:18px;height:18px;}
-.testi-controls{display:flex;gap:.5rem;}
+.testi-controls{display:none;}
 .testi-dot{width:8px;height:8px;border-radius:50%;background:var(--color-line);transition:background var(--t-fast),transform var(--t-fast);}
 .testi-dot.is-active{background:var(--color-burgundy);transform:scale(1.2);}
 
@@ -746,7 +802,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
         <li><a href="URL_INICIO" aria-current="page">Inicio</a></li>
         <li><a href="URL_SOBRE_NOSOTRAS">Sobre nosotras</a></li>
         <li>
-          <a href="URL_SERVICIOS">Servicios</a>
+          <a href="URL_INICIO#servicios">Servicios</a>
           <ul class="nav-submenu" aria-label="Servicios">
             <li><a href="URL_SERVICIO_MEDICINA_ESTETICA">Medicina estética</a></li>
             <li><a href="URL_SERVICIO_CIRUGIA_MENOR">Cirugía menor ambulatoria</a></li>
@@ -808,6 +864,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
           </div>
           <h3>Medicina estética</h3>
           <p>Cuidado natural, resultados reales.</p>
+          <span class="service-card-cta">Ver servicio</span>
         </a>
 
         <a class="service-card" href="URL_SERVICIO_CIRUGIA_MENOR" data-reveal>
@@ -816,6 +873,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
           </div>
           <h3>Cirugía menor ambulatoria</h3>
           <p>Segura, precisa y con recuperación rápida.</p>
+          <span class="service-card-cta">Ver servicio</span>
         </a>
 
         <a class="service-card" href="URL_SERVICIO_DERMATOLOGIA_TRICOLOGIA" data-reveal>
@@ -824,6 +882,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
           </div>
           <h3>Dermatología y tricología</h3>
           <p>Salud de la piel y del cabello.</p>
+          <span class="service-card-cta">Ver servicio</span>
         </a>
 
         <a class="service-card" href="URL_SERVICIO_SALUD_SEXUAL_REPRODUCTIVA" data-reveal>
@@ -832,6 +891,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
           </div>
           <h3>Salud sexual y reproductiva</h3>
           <p>Asesoría experta, cercana y personalizada.</p>
+          <span class="service-card-cta">Ver servicio</span>
         </a>
 
         <a class="service-card" href="URL_SERVICIO_VASECTOMIA" data-reveal>
@@ -840,6 +900,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
           </div>
           <h3>Vasectomía sin bisturí</h3>
           <p>Método seguro, ambulatorio y rápido.</p>
+          <span class="service-card-cta">Ver servicio</span>
         </a>
 
         <a class="service-card" href="URL_SERVICIO_MEDICINA_INTEGRATIVA" data-reveal>
@@ -848,6 +909,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
           </div>
           <h3>Medicina integrativa</h3>
           <p>Un enfoque global de tu salud y bienestar.</p>
+          <span class="service-card-cta">Ver servicio</span>
         </a>
       </div>
     </div>
@@ -1117,7 +1179,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
         <ul>
           <li><a href="URL_INICIO">Inicio</a></li>
           <li><a href="URL_SOBRE_NOSOTRAS">Sobre nosotras</a></li>
-          <li><a href="URL_SERVICIOS">Servicios</a></li>
+          <li><a href="URL_INICIO#servicios">Servicios</a></li>
           <li><a href="URL_SERVICIO_MEDICINA_ESTETICA">Medicina estética</a></li>
           <li><a href="URL_SERVICIO_CIRUGIA_MENOR">Cirugía menor ambulatoria</a></li>
           <li><a href="URL_SERVICIO_DERMATOLOGIA_TRICOLOGIA">Dermatología y tricología</a></li>
@@ -1271,11 +1333,6 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.15;col
   buildTestiDots();
   testiGoTo(0);
 
-  var testiAutoplay = setInterval(function(){
-    var next = testiIndex + 1 > testiMaxIndex() ? 0 : testiIndex + 1;
-    testiGoTo(next);
-  }, 5000);
-  testiSlides.closest('.testi-wrap').addEventListener('mouseenter', function(){ clearInterval(testiAutoplay); });
 
   /* ============================================================
      Formulario de contacto del CTA final
